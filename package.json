@@ -1,0 +1,9 @@
+{
+  "name": "tmailweb",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "mongodb": "^6.3.0",
+    "postal-mime": "^2.3.0"
+  }
+}
