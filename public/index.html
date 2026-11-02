@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TempMail Neo-Brutalism</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800;900&display=swap');
+    body { 
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+      background-size: 20px 20px;
+    }
+    .dark body {
+      background-image: radial-gradient(#334155 1.5px, transparent 1.5px);
+    }
+    .neo-box {
+      border: 3px solid #0f172a;
+      box-shadow: 5px 5px 0px 0px #0f172a;
+    }
+    .dark .neo-box {
+      border: 3px solid #f8fafc;
+      box-shadow: 5px 5px 0px 0px #f8fafc;
+    }
+    .neo-btn {
+      border: 3px solid #0f172a;
+      box-shadow: 3px 3px 0px 0px #0f172a;
+      transition: all 0.1s ease;
+    }
+    .dark .neo-btn {
+      border: 3px solid #f8fafc;
+      box-shadow: 3px 3px 0px 0px #f8fafc;
+    }
+    .neo-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0px 0px #0f172a;
+    }
+  </style>
+</head>
+<body class="bg-blue-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col justify-between transition-colors duration-200">
+
+  <div>
+    <!-- Header Section -->
+    <header class="max-w-3xl mx-auto pt-6 px-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-500 neo-box flex items-center justify-center text-white text-lg sm:text-xl">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div>
+          <h1 class="font-black text-xl sm:text-2xl tracking-wider uppercase">TempMail</h1>
+          <p class="text-[10px] sm:text-xs font-bold text-slate-500 dark:text-slate-400">INSTANT EMAIL GENERATOR</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <button onclick="toggleAdminModal()" class="w-9 h-9 sm:w-10 sm:h-10 bg-amber-300 dark:bg-amber-400 text-slate-900 neo-btn flex items-center justify-center text-sm sm:text-base" title="Pengaturan Admin">
+          <i class="fa-solid fa-gear"></i>
+        </button>
+        <button onclick="toggleTheme()" class="w-9 h-9 sm:w-10 sm:h-10 bg-purple-300 dark:bg-purple-400 text-slate-900 neo-btn flex items-center justify-center text-sm sm:text-base" title="Ganti Mode">
+          <i id="themeIcon" class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-3xl mx-auto p-3 sm:p-4 py-4 sm:py-6 space-y-4 sm:space-y-6">
+
+      <!-- Card Email Generator -->
+      <div class="bg-white dark:bg-slate-900 neo-box p-4 sm:p-8 space-y-4 sm:space-y-6 relative overflow-hidden">
+        
+        <!-- Top Badge Banner -->
+        <div class="flex justify-center">
+          <div class="bg-amber-300 dark:bg-amber-400 text-slate-900 font-extrabold text-[10px] sm:text-xs tracking-widest uppercase px-3 py-1 sm:px-4 sm:py-1.5 border-2 border-slate-900 shadow-[2px_2px_0px_0px_#000] flex items-center space-x-1.5">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>SECURE TEMP INBOX</span>
+          </div>
+        </div>
+
+        <div class="text-center space-y-1">
+          <h2 class="text-xl sm:text-2xl font-black uppercase">Alamat Email Kamu</h2>
+          <p class="text-[11px] sm:text-xs font-bold text-slate-500 dark:text-slate-400">Ketik nama custom lalu tekan tombol PAKAI untuk mengaktifkan.</p>
+        </div>
+
+        <div class="border-t-2 border-dashed border-slate-300 dark:border-slate-700 my-2 sm:my-4"></div>
+
+        <!-- Custom Email Input & Custom Domain Selector Trigger -->
+        <div class="space-y-3">
+          <div class="flex flex-row items-stretch gap-1.5 sm:gap-2">
+            
+            <!-- Username Input -->
+            <div class="flex-1 bg-slate-100 dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-100 flex items-center px-2.5 sm:px-3 py-1 min-w-0">
+              <i class="fa-regular fa-envelope text-slate-400 mr-1.5 text-xs sm:text-base"></i>
+              <input type="text" id="customUsername" placeholder="nama-kamu" class="w-full bg-transparent font-mono font-extrabold text-sm sm:text-lg focus:outline-none text-slate-900 dark:text-slate-100 min-w-0">
+              <span class="font-black text-slate-400 text-sm sm:text-base">@</span>
+            </div>
+
+            <!-- Custom Popup Domain Button -->
+            <button onclick="openDomainSelector()" id="domainTriggerBtn" class="bg-cyan-300 dark:bg-cyan-400 text-slate-900 font-extrabold font-mono text-xs sm:text-sm px-2.5 sm:px-4 py-2.5 sm:py-3 neo-btn flex items-center justify-between gap-1.5 shrink-0 max-w-[45%] sm:max-w-none">
+              <span id="currentDomainLabel" class="truncate">bkh.biz.id</span>
+              <i class="fa-solid fa-caret-down text-xs sm:text-sm"></i>
+            </button>
+
+          </div>
+
+          <!-- Action Buttons Grid (Interactive Feedback Buttons) -->
+          <div class="grid grid-cols-3 gap-1.5 sm:gap-3">
+            <button id="btnApply" onclick="applyEmail()" class="bg-lime-400 dark:bg-lime-500 text-slate-900 font-extrabold text-[10px] sm:text-sm py-2.5 sm:py-3 px-1 neo-btn flex items-center justify-center space-x-1 sm:space-x-2">
+              <i class="fa-solid fa-check text-xs sm:text-base"></i>
+              <span class="btn-text truncate">PAKAI EMAIL</span>
+            </button>
+            <button id="btnCopy" onclick="copyEmail()" class="bg-emerald-300 dark:bg-emerald-400 text-slate-900 font-extrabold text-[10px] sm:text-sm py-2.5 sm:py-3 px-1 neo-btn flex items-center justify-center space-x-1 sm:space-x-2">
+              <i class="fa-regular fa-copy text-xs sm:text-base"></i>
+              <span class="btn-text truncate">SALIN EMAIL</span>
+            </button>
+            <button id="btnRandom" onclick="generateRandomMail()" class="bg-indigo-400 dark:bg-indigo-500 text-white font-extrabold text-[10px] sm:text-sm py-2.5 sm:py-3 px-1 neo-btn flex items-center justify-center space-x-1 sm:space-x-2">
+              <i class="fa-solid fa-shuffle text-xs sm:text-base"></i>
+              <span class="btn-text truncate">ACAK NAMA</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inbox List Section -->
+      <div class="bg-white dark:bg-slate-900 neo-box p-4 sm:p-6 space-y-3 sm:space-y-4">
+        <div class="flex flex-row items-center justify-between pb-3 border-b-2 border-slate-900 dark:border-slate-100">
+          <div class="flex items-center space-x-2">
+            <div class="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-red-500 rounded-full border border-slate-900"></div>
+            <h3 class="font-black text-sm sm:text-lg uppercase tracking-wide">Kotak Masuk</h3>
+          </div>
+          <div class="flex items-center space-x-1.5 sm:space-x-2">
+            <button id="btnRefresh" onclick="fetchMessages(true)" class="text-[10px] sm:text-xs font-black bg-slate-200 dark:bg-slate-800 px-2 sm:px-3 py-1 sm:py-1.5 border border-slate-900 dark:border-slate-100 hover:bg-slate-300 flex items-center space-x-1">
+              <i class="fa-solid fa-rotate text-xs"></i>
+              <span class="btn-text">REFRESH</span>
+            </button>
+            <button onclick="clearAllInbox()" class="text-[10px] sm:text-xs font-black bg-rose-400 text-slate-900 px-2 sm:px-3 py-1 sm:py-1.5 border border-slate-900 hover:bg-rose-500">
+              <i class="fa-solid fa-trash-can mr-1"></i> HAPUS INBOX
+            </button>
+          </div>
+        </div>
+
+        <div id="inboxList" class="space-y-2.5">
+          <div class="text-center py-8 font-bold text-slate-400 text-xs sm:text-sm">
+            Belum ada email masuk...
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer Watermark Section -->
+  <footer class="w-full py-4 sm:py-6 mt-6 sm:mt-8 text-center border-t-2 border-slate-900 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xs">
+    <p class="font-mono font-extrabold text-[11px] sm:text-sm text-slate-700 dark:text-slate-300 tracking-wider">
+      © 2026 HANNZDEV ENGINE All right reserved
+    </p>
+  </footer>
+
+  <!-- Modal Popup Pengumuman / Informasi User -->
+  <div id="announcementModal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 neo-box max-w-md w-full p-5 sm:p-6 space-y-4 animate-in fade-in zoom-in duration-150">
+      <div class="p-3 bg-amber-300 dark:bg-amber-400 text-slate-900 border-2 border-slate-900 flex justify-between items-center">
+        <h3 id="announcementTitle" class="font-black text-sm sm:text-base uppercase flex items-center gap-2">
+          <i class="fa-solid fa-bullhorn"></i> INFORMASI
+        </h3>
+        <button onclick="closeAnnouncementModal()" class="font-black text-lg"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="announcementText" class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
+      </div>
+      <button onclick="closeAnnouncementModal()" class="w-full py-2.5 bg-indigo-500 text-white font-black text-xs sm:text-sm neo-btn">MENGERTI</button>
+    </div>
+  </div>
+
+  <!-- Modal Selector Domain Custom -->
+  <div id="domainModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 neo-box max-w-sm w-full p-5 sm:p-6 space-y-4 animate-in fade-in zoom-in duration-150">
+      <div class="flex justify-between items-center border-b-2 border-slate-900 dark:border-slate-100 pb-2">
+        <h3 class="font-black text-sm sm:text-base uppercase">PILIH DOMAIN</h3>
+        <button onclick="closeDomainSelector()" class="font-black text-lg"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="domainListContainer" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Read Email -->
+  <div id="emailModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 neo-box max-w-3xl w-full max-h-[85vh] flex flex-col overflow-hidden">
+      <div class="p-4 border-b-2 border-slate-900 dark:border-slate-100 bg-amber-300 dark:bg-amber-400 text-slate-900 flex justify-between items-start">
+        <div>
+          <h3 id="modalSubject" class="font-black text-sm sm:text-lg leading-tight"></h3>
+          <div class="text-[11px] sm:text-xs font-bold mt-1">Dari: <span id="modalSender"></span></div>
+        </div>
+        <div class="flex items-center space-x-2">
+          <button onclick="deleteSingleEmail()" class="p-1 text-slate-900 hover:text-rose-600 font-black text-base sm:text-lg mr-2" title="Hapus Pesan Ini">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+          <button onclick="closeEmailModal()" class="font-black text-xl p-1"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+      <div id="modalBodyContainer" class="p-4 overflow-y-auto flex-1 min-h-[300px] bg-white"></div>
+    </div>
+  </div>
+
+  <!-- Modal Admin Dashboard LENGKAP -->
+  <div id="adminModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 neo-box max-w-lg w-full p-5 sm:p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b-2 border-slate-900 dark:border-slate-100 pb-2">
+        <h3 class="font-black text-sm sm:text-base uppercase">ADMIN DASHBOARD</h3>
+        <button onclick="toggleAdminModal()"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      
+      <div class="space-y-4">
+        <!-- Admin Key Verification -->
+        <div>
+          <label class="block text-[11px] font-black uppercase mb-1">Admin Key</label>
+          <input type="password" id="adminKeyInput" placeholder="Masukkan Secret Key" class="w-full bg-slate-100 dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-100 p-2.5 font-bold text-xs sm:text-sm focus:outline-none">
+        </div>
+
+        <!-- Section 1: Kelola & Hapus Domain -->
+        <div class="border-t-2 border-dashed border-slate-300 dark:border-slate-700 pt-3 space-y-2">
+          <h4 class="font-black text-xs uppercase flex items-center justify-between">
+            <span>KELOLA LIST DOMAIN</span>
+            <span class="text-[10px] text-slate-400 font-bold">Hapus jika tak terpakai</span>
+          </h4>
+          
+          <div class="flex gap-1.5">
+            <input type="text" id="newDomainInput" placeholder="domainbaru.com" class="flex-1 bg-slate-100 dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-100 p-2 font-bold text-xs focus:outline-none">
+            <button onclick="addNewDomain()" class="px-3 bg-emerald-400 text-slate-900 font-black text-xs neo-btn">TAMBAH</button>
+          </div>
+
+          <div id="adminDomainList" class="space-y-1.5 max-h-36 overflow-y-auto pt-1">
+            <!-- List domain terdaftar dengan tombol hapus -->
+          </div>
+        </div>
+
+        <!-- Section 2: Kelola Pengumuman Popup -->
+        <div class="border-t-2 border-dashed border-slate-300 dark:border-slate-700 pt-3 space-y-3">
+          <div class="flex justify-between items-center">
+            <h4 class="font-black text-xs uppercase">POPUP PENGUMUMAN USER</h4>
+            <label class="flex items-center gap-2 cursor-pointer font-bold text-xs">
+              <input type="checkbox" id="announcementEnabled" class="w-4 h-4 accent-indigo-600 cursor-pointer">
+              <span>AKTIFFAN</span>
+            </label>
+          </div>
+          <input type="text" id="announcementTitleInput" placeholder="Judul Pengumuman" class="w-full bg-slate-100 dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-100 p-2 font-bold text-xs focus:outline-none">
+          <textarea id="announcementTextInput" rows="3" placeholder="Tulis isi pengumuman untuk pengunjung website..." class="w-full bg-slate-100 dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-100 p-2 font-bold text-xs focus:outline-none"></textarea>
+          <button onclick="saveAnnouncementSettings()" class="w-full py-2.5 bg-amber-400 text-slate-900 font-black text-xs neo-btn">SIMPAN PENGUMUMAN</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let availableDomains = [];
+    let currentDomain = "bkh.biz.id";
+    let fetchedMessages = [];
+    let activeMessageId = null;
+
+    // Theme Handlers
+    function initTheme() {
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+        document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.getElementById('themeIcon').className = 'fa-solid fa-moon';
+      }
+    }
+
+    function toggleTheme() {
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.theme = 'light';
+        document.getElementById('themeIcon').className = 'fa-solid fa-moon';
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.theme = 'dark';
+        document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+      }
+    }
+
+    // Dynamic URL Route Syncing
+    function syncUrlAndState() {
+      const fullEmail = getFullEmail();
+      if (fullEmail) {
+        history.pushState(null, '', '/' + fullEmail);
+      }
+    }
+
+    function parseInitialUrl() {
+      const path = window.location.pathname.substring(1);
+      if (path && path.includes('@')) {
+        const parts = path.split('@');
+        if (parts[0]) document.getElementById('customUsername').value = parts[0];
+        if (parts[1]) currentDomain = parts[1];
+      }
+    }
+
+    // Interactive Button Effects helper
+    function setTemporaryButtonState(btnId, activeText, activeIcon, duration = 1500) {
+      const btn = document.getElementById(btnId);
+      if (!btn) return;
+      const textSpan = btn.querySelector('.btn-text');
+      const icon = btn.querySelector('i');
+
+      const originalText = textSpan.innerText;
+      const originalIconClass = icon.className;
+
+      textSpan.innerText = activeText;
+      if (activeIcon) icon.className = activeIcon;
+
+      setTimeout(() => {
+        textSpan.innerText = originalText;
+        icon.className = originalIconClass;
+      }, duration);
+    }
+
+    // Domain Fetching & Selector Popup
+    async function loadDomains() {
+      try {
+        const res = await fetch('/api/domains');
+        const data = await res.json();
+        
+        if (data.domains && data.domains.length > 0) {
+          availableDomains = data.domains;
+          if (!availableDomains.includes(currentDomain)) {
+            currentDomain = availableDomains[0];
+          }
+        } else {
+          availableDomains = ['bkh.biz.id'];
+          currentDomain = 'bkh.biz.id';
+        }
+
+        document.getElementById('currentDomainLabel').innerText = currentDomain;
+
+        if (!document.getElementById('customUsername').value) {
+          generateRandomMail(false);
+        } else {
+          syncUrlAndState();
+          fetchMessages();
+        }
+      } catch (err) {
+        console.error("Gagal memuat domain", err);
+      }
+    }
+
+    function openDomainSelector() {
+      const container = document.getElementById('domainListContainer');
+      container.innerHTML = availableDomains.map(d => `
+        <button onclick="selectDomain('${d}')" class="w-full p-2.5 sm:p-3 font-bold text-xs sm:text-sm text-left border-2 border-slate-900 dark:border-slate-100 ${d === currentDomain ? 'bg-amber-300 dark:bg-amber-400 text-slate-900' : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200'} transition flex justify-between items-center">
+          <span>${d}</span>
+          ${d === currentDomain ? '<i class="fa-solid fa-check"></i>' : ''}
+        </button>
+      `).join('');
+
+      document.getElementById('domainModal').classList.remove('hidden');
+    }
+
+    function closeDomainSelector() {
+      document.getElementById('domainModal').classList.add('hidden');
+    }
+
+    function selectDomain(domain) {
+      currentDomain = domain;
+      document.getElementById('currentDomainLabel').innerText = currentDomain;
+      closeDomainSelector();
+      applyEmail();
+    }
+
+    function generateRandomString(len = 8) {
+      return Math.random().toString(36).substring(2, 2 + len);
+    }
+
+    function generateRandomMail(showFeedback = true) {
+      document.getElementById('customUsername').value = generateRandomString();
+      if (showFeedback) {
+        setTemporaryButtonState('btnRandom', 'BERHASIL!', 'fa-solid fa-check text-xs sm:text-base');
+      }
+      applyEmail(false);
+    }
+
+    function getFullEmail() {
+      const user = document.getElementById('customUsername').value.trim().toLowerCase();
+      return user ? `${user}@${currentDomain}` : '';
+    }
+
+    function applyEmail(showFeedback = true) {
+      const full = getFullEmail();
+      if (!full) return;
+      if (showFeedback) {
+        setTemporaryButtonState('btnApply', 'BERHASIL PAKAI!', 'fa-solid fa-check-double text-xs sm:text-base');
+      }
+      syncUrlAndState();
+      fetchMessages();
+    }
+
+    function copyEmail() {
+      const full = getFullEmail();
+      if (!full) return;
+      navigator.clipboard.writeText(full);
+      setTemporaryButtonState('btnCopy', 'BERHASIL SALIN!', 'fa-solid fa-check text-xs sm:text-base');
+    }
+
+    // Fetch Messages with Interactive Loading State
+    async function fetchMessages(manualClick = false) {
+      const fullEmail = getFullEmail();
+      if (!fullEmail) return;
+
+      const btnRefresh = document.getElementById('btnRefresh');
+      const icon = btnRefresh.querySelector('i');
+      if (manualClick) {
+        icon.classList.add('fa-spin');
+        btnRefresh.querySelector('.btn-text').innerText = "MEMUAT...";
+      }
+
+      try {
+        const res = await fetch(`/api/get-emails?address=${encodeURIComponent(fullEmail)}`);
+        const data = await res.json();
+        const inbox = document.getElementById('inboxList');
+        fetchedMessages = data.messages || [];
+
+        if (fetchedMessages.length === 0) {
+          inbox.innerHTML = `<div class="text-center py-8 font-bold text-slate-400 text-xs sm:text-sm">Belum ada email masuk...</div>`;
+        } else {
+          inbox.innerHTML = fetchedMessages.map((msg, idx) => `
+            <div onclick="openEmailModal(${idx})" class="p-3 sm:p-4 bg-slate-50 dark:bg-slate-800 border-2 border-slate-900 dark:border-slate-100 cursor-pointer hover:bg-amber-100 dark:hover:bg-slate-700 transition flex justify-between items-center">
+              <div class="space-y-0.5 sm:space-y-1 min-w-0 pr-2">
+                <div class="text-[10px] sm:text-xs font-black text-indigo-600 dark:text-indigo-400 truncate">${msg.sender}</div>
+                <div class="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-slate-100 truncate">${msg.subject}</div>
+              </div>
+              <i class="fa-solid fa-arrow-right text-xs shrink-0"></i>
+            </div>
+          `).join('');
+        }
+      } catch (err) {
+        console.error("Gagal mengambil pesan", err);
+      } finally {
+        if (manualClick) {
+          setTimeout(() => {
+            icon.classList.remove('fa-spin');
+            btnRefresh.querySelector('.btn-text').innerText = "REFRESH";
+          }, 400);
+        }
+      }
+    }
+
+    // Announcement Popup Functions
+    async function loadAnnouncement() {
+      try {
+        const res = await fetch('/api/announcement');
+        const data = await res.json();
+        if (data.enabled && data.text) {
+          document.getElementById('announcementTitle').innerHTML = `<i class="fa-solid fa-bullhorn"></i> ${data.title || 'INFORMASI'}`;
+          document.getElementById('announcementText').innerText = data.text;
+          document.getElementById('announcementModal').classList.remove('hidden');
+        }
+      } catch (err) {
+        console.error("Gagal load pengumuman", err);
+      }
+    }
+
+    function closeAnnouncementModal() {
+      document.getElementById('announcementModal').classList.add('hidden');
+    }
+
+    // Admin Dashboard Functions
+    function toggleAdminModal() {
+      const modal = document.getElementById('adminModal');
+      modal.classList.toggle('hidden');
+      if (!modal.classList.contains('hidden')) {
+        renderAdminDomainList();
+        loadAnnouncementAdminData();
+      }
+    }
+
+    function renderAdminDomainList() {
+      const container = document.getElementById('adminDomainList');
+      container.innerHTML = availableDomains.map(d => `
+        <div class="flex justify-between items-center p-2 bg-slate-100 dark:bg-slate-800 border border-slate-900 dark:border-slate-700 text-xs font-bold">
+          <span>${d}</span>
+          <button onclick="deleteDomain('${d}')" class="text-rose-500 hover:text-rose-700 px-2" title="Hapus Domain"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+      `).join('');
+    }
+
+    async function loadAnnouncementAdminData() {
+      try {
+        const res = await fetch('/api/announcement');
+        const data = await res.json();
+        document.getElementById('announcementEnabled').checked = Boolean(data.enabled);
+        document.getElementById('announcementTitleInput').value = data.title || '';
+        document.getElementById('announcementTextInput').value = data.text || '';
+      } catch (err) {}
+    }
+
+    async function addNewDomain() {
+      const domain = document.getElementById('newDomainInput').value;
+      const adminKey = document.getElementById('adminKeyInput').value;
+
+      if (!domain || !adminKey) return alert("Isi nama domain dan admin key!");
+
+      try {
+        const res = await fetch('/api/domains', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ domain, adminKey })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById('newDomainInput').value = '';
+          await loadDomains();
+          renderAdminDomainList();
+          alert("Domain berhasil ditambahkan!");
+        } else {
+          alert(data.error || "Gagal menambah domain");
+        }
+      } catch (err) {
+        alert("Terjadi kesalahan!");
+      }
+    }
+
+    async function deleteDomain(domain) {
+      const adminKey = document.getElementById('adminKeyInput').value;
+      if (!adminKey) return alert("Masukkan Admin Key terlebih dahulu di atas!");
+
+      if (!confirm(`Hapus domain ${domain} dari daftar?`)) return;
+
+      try {
+        const res = await fetch('/api/domains', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ domain, adminKey })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          await loadDomains();
+          renderAdminDomainList();
+        } else {
+          alert(data.error || "Gagal menghapus domain.");
+        }
+      } catch (err) {
+        alert("Terjadi kesalahan!");
+      }
+    }
+
+    async function saveAnnouncementSettings() {
+      const enabled = document.getElementById('announcementEnabled').checked;
+      const title = document.getElementById('announcementTitleInput').value;
+      const text = document.getElementById('announcementTextInput').value;
+      const adminKey = document.getElementById('adminKeyInput').value;
+
+      if (!adminKey) return alert("Masukkan Admin Key!");
+
+      try {
+        const res = await fetch('/api/announcement', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ enabled, title, text, adminKey })
+        });
+        if (res.ok) {
+          alert("Pengumuman berhasil diperbarui!");
+        } else {
+          const data = await res.json();
+          alert(data.error || "Gagal menyimpan pengumuman.");
+        }
+      } catch (err) {
+        alert("Terjadi kesalahan!");
+      }
+    }
+
+    // Delete Messages Functions
+    async function clearAllInbox() {
+      const full = getFullEmail();
+      if (!full) return;
+
+      if (!confirm(`Apakah Anda yakin ingin menghapus semua isi inbox ${full}?`)) return;
+
+      try {
+        const res = await fetch('/api/delete-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ address: full })
+        });
+        if (res.ok) {
+          fetchMessages();
+        } else {
+          alert("Gagal membersihkan inbox.");
+        }
+      } catch (err) {
+        alert("Terjadi kesalahan sistem saat menghapus inbox.");
+      }
+    }
+
+    async function deleteSingleEmail() {
+      if (!activeMessageId) return;
+
+      if (!confirm("Hapus pesan email ini?")) return;
+
+      try {
+        const res = await fetch('/api/delete-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: activeMessageId })
+        });
+        if (res.ok) {
+          closeEmailModal();
+          fetchMessages();
+        } else {
+          alert("Gagal menghapus pesan.");
+        }
+      } catch (err) {
+        alert("Terjadi kesalahan.");
+      }
+    }
+
+    // Open Inbox Message Modal
+    function openEmailModal(index) {
+      const msg = fetchedMessages[index];
+      if (!msg) return;
+
+      activeMessageId = msg._id;
+      document.getElementById('modalSubject').innerText = msg.subject;
+      document.getElementById('modalSender').innerText = msg.sender;
+
+      const container = document.getElementById('modalBodyContainer');
+      container.innerHTML = '';
+
+      const isHtml = /<[a-z][\s\S]*>/i.test(msg.body);
+      if (isHtml) {
+        const iframe = document.createElement('iframe');
+        iframe.className = "w-full h-[450px] border-0 bg-white";
+        container.appendChild(iframe);
+
+        const doc = iframe.contentWindow.document;
+        doc.open();
+        doc.write(msg.body);
+        doc.close();
+      } else {
+        const div = document.createElement('div');
+        div.className = "whitespace-pre-wrap font-sans text-xs sm:text-sm text-slate-800 p-2 leading-relaxed";
+        div.innerText = msg.body;
+        container.appendChild(div);
+      }
+
+      document.getElementById('emailModal').classList.remove('hidden');
+    }
+
+    function closeEmailModal() {
+      document.getElementById('emailModal').classList.add('hidden');
+      activeMessageId = null;
+    }
+
+    // Handle Browser History
+    window.onpopstate = () => {
+      parseInitialUrl();
+      fetchMessages();
+    };
+
+    // Initialize Application
+    initTheme();
+    parseInitialUrl();
+    loadDomains();
+    loadAnnouncement();
+    setInterval(fetchMessages, 5000);
+  </script>
+</body>
+</html>
